@@ -1,8 +1,12 @@
 package com.example.projeto_dick_bdiii.common;
 
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ConversorData {
     public static String converterDateParaDataHora(Date data){
-        SimpleDateFormat formatador = new SimpleDateFormat(pattern:"dd/MM/YYYY HH:mm:ss");
+        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
         return formatador.format(data);
     }
 }

@@ -2,8 +2,6 @@ package com.example.projeto_dick_bdiii.domain.model;
 
 import java.util.List;
 
-import org.hibernate.annotations.ManyToAny;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;

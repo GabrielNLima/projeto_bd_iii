@@ -1,12 +1,20 @@
 package com.example.projeto_dick_bdiii.domain.service;
 
-import org.apache.el.stream.Optional;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.projeto_dick_bdiii.domain.dto.usuario.UsuarioRequestdto;
 import com.example.projeto_dick_bdiii.domain.dto.usuario.UsuarioResponsedto;
+import com.example.projeto_dick_bdiii.domain.exception.BadRequestException;
 import com.example.projeto_dick_bdiii.domain.exception.ResourceNotFoundException;
+import com.example.projeto_dick_bdiii.domain.model.Usuario;
+import com.example.projeto_dick_bdiii.domain.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService implements 
@@ -22,7 +30,7 @@ public class UsuarioService implements
         List<Usuario> usuarios = UsuarioRepository.findAll();
         return usuarios.stream().map(usuario -> 
         mapper.map(usuario,
-         destinationType:UsuarioResponsedto.class))
+         destinationTypeUsuarioResponsedto.class))
         .collect(Collectors.toList());
     }
 
@@ -39,20 +47,46 @@ public class UsuarioService implements
 
     @Override
     public UsuarioResponsedto cadastrar(UsuarioRequestdto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cadastrar'");
+        if (dto.getEmail() == null || dto.getSenha() == null){
+            throw new BadRequestException("Email e Senha são obrigatórios!");
+        }
+        Optional<Usuario> optUsuario = UsuarioRepository
+        .findByEmail(dto.getEmail());
+        if(optUsuario.isPresent()){
+            throw new BadRequestException("Já existe um usuário com este email na base de dados!");
+        }
+        Usuario usuario = mapper.map(dto, destinationType:Usuario.class);
+        usuario.setDataCadastro(new Date());;
+        // criptografar senha
+        usuario = UsuarioRepository.save(usuario);
+        return mapper.map(usuario, destinationType:UsuarioResponsedto.class);
     }
 
     @Override
     public UsuarioResponsedto atualizar(Long id, UsuarioRequestdto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'atualizar'");
+        obterPorId(id);
+        if(optUsuario.isPresent()){
+            throw new BadRequestException("Já existe um usuário com este email na base de dados!");
+        }
+        Usuario usuario = mapper
+        .map(dto, destinationType:Usuario.class);
+        usuario.setId(id);
+        usuario = UsuarioRepository.save(usuario);
+        return mapper
+        .map(usuario, destinationType:UsuarioResponsedto.class);
+
     }
 
     @Override
     public void deletar(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deletar'");
+        Optional<Usuario> optUsuario = UsuarioRepository
+        .findById(id);
+        if(optUsuario.isEmpty()){
+            throw new ResourceNotFoundException("Não foi possivel obter o usuario com o id.");
+        };
     }
+    Usuario usuario = optUsuario.get();
+    usuario.setDataInativacao(new Date());
+    UsuarioRepository.save(usuario);
 
 }

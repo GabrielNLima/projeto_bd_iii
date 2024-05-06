@@ -1,5 +1,7 @@
 package com.example.projeto_dick_bdiii.domain.dto.usuario;
 
+import java.util.Date;
+
 public class UsuarioResponsedto {
     private Long id;
     private String nome;

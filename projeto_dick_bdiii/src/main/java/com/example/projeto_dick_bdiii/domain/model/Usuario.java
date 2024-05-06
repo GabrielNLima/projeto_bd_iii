@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+// import org.springframework.security.core.GrantedAuthority;
+// import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,12 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Usuario implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idUsuario")
-    private Long id;
-    private String nome;
+public class Usuario /*implements UserDetails */ {
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
@@ -81,6 +76,9 @@ public class Usuario implements UserDetails {
     public void setTitulos(List<Titulo> titulos) {
         this.titulos = titulos;
     }
+}
+    /*
+    METODOS ABAIXO DO FRAMEWORK SPRING PARA CONTA DE USUARIO
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
@@ -111,3 +109,4 @@ public class Usuario implements UserDetails {
         return true;
     }
 }
+*/
