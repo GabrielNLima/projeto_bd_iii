@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProjetoDickBdiiiApplication<projeto_dick_bdiii>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.projeto_dick_bdiii.ProjetoDickBdiiiApplication",
+            "projectName": "projeto_dick_bdiii",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
