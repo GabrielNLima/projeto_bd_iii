@@ -17,76 +17,75 @@ import com.example.projeto_dick_bdiii.domain.model.Usuario;
 import com.example.projeto_dick_bdiii.domain.repository.UsuarioRepository;
 
 @Service
-public class UsuarioService implements 
-    ICRUDService<UsuarioRequestdto, UsuarioResponsedto> {
+public class UsuarioService implements
+        ICRUDService<UsuarioRequestdto, UsuarioResponsedto> {
     
     @Autowired
-    private UsuarioRepository UsuarioRepository;
+    private UsuarioRepository usuarioRepository;
     @Autowired
     private ModelMapper mapper;
-
     @Override
     public List<UsuarioResponsedto> obterTodos() {
-        List<Usuario> usuarios = UsuarioRepository.findAll();
-        return usuarios.stream().map(usuario -> 
-        mapper.map(usuario,
-         destinationTypeUsuarioResponsedto.class))
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream().map(usuario ->
+        mapper.map(usuario, 
+        UsuarioResponsedto.class))
         .collect(Collectors.toList());
     }
 
     @Override
     public UsuarioResponsedto obterPorId(Long id) {
-        Optional<Usuario> usuario = UsuarioRepository.findById(id);
-        if(usuario.isEmpty()){
-            throw new ResourceNotFoundException("Não foi possível obter o usuário com o id " + id);
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isEmpty()) {
+            throw new ResourceNotFoundException("Não foi possivel obter o usuário com o id " + id);
         }
         return mapper.map(usuario,
-        destinationType:UsuarioResponsedto.class);
-
+        UsuarioResponsedto.class);
     }
 
     @Override
     public UsuarioResponsedto cadastrar(UsuarioRequestdto dto) {
         if (dto.getEmail() == null || dto.getSenha() == null){
-            throw new BadRequestException("Email e Senha são obrigatórios!");
+            throw new BadRequestException("Email e Senha são Obrigatórios");
         }
-        Optional<Usuario> optUsuario = UsuarioRepository
+        Optional<Usuario> optUsuario = usuarioRepository
         .findByEmail(dto.getEmail());
-        if(optUsuario.isPresent()){
-            throw new BadRequestException("Já existe um usuário com este email na base de dados!");
+        if (optUsuario.isPresent()){
+            throw new BadRequestException("Usuário existente com esse Email no Banco de Dados");
         }
-        Usuario usuario = mapper.map(dto, destinationType:Usuario.class);
-        usuario.setDataCadastro(new Date());;
-        // criptografar senha
-        usuario = UsuarioRepository.save(usuario);
-        return mapper.map(usuario, destinationType:UsuarioResponsedto.class);
+        Usuario usuario = mapper 
+        .map(dto, Usuario.class);
+        usuario.setDataCadastro(new Date());
+        //criptografar senha
+        usuario = usuarioRepository.save(usuario);
+        return mapper.map(usuario, UsuarioResponsedto.class);
     }
 
     @Override
     public UsuarioResponsedto atualizar(Long id, UsuarioRequestdto dto) {
         obterPorId(id);
-        if(optUsuario.isPresent()){
-            throw new BadRequestException("Já existe um usuário com este email na base de dados!");
+        if (dto.getEmail() == null || dto.getSenha() == null){
+            throw new BadRequestException("Email e Senha são Obrigatórios");
         }
-        Usuario usuario = mapper
-        .map(dto, destinationType:Usuario.class);
+        Usuario usuario = mapper 
+        .map(dto, Usuario.class);
         usuario.setId(id);
-        usuario = UsuarioRepository.save(usuario);
-        return mapper
-        .map(usuario, destinationType:UsuarioResponsedto.class);
+        usuario = usuarioRepository.save(usuario);
+        return mapper.map(usuario, UsuarioResponsedto.class);
 
     }
 
     @Override
     public void deletar(Long id) {
-        Optional<Usuario> optUsuario = UsuarioRepository
+        Optional<Usuario> optUsuario = usuarioRepository
         .findById(id);
-        if(optUsuario.isEmpty()){
-            throw new ResourceNotFoundException("Não foi possivel obter o usuario com o id.");
-        };
+        if (optUsuario.isEmpty()){
+            throw new ResourceNotFoundException("Não foi possivel obter o usuário com o id " + id);
+        }
+        Usuario usuario = optUsuario.get();
+        usuario.setDataInativacao(new Date());
+        usuarioRepository.save(usuario);
     }
-    Usuario usuario = optUsuario.get();
-    usuario.setDataInativacao(new Date());
-    UsuarioRepository.save(usuario);
 
+    
 }

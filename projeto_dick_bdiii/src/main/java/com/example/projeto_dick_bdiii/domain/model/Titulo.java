@@ -3,8 +3,6 @@ package com.example.projeto_dick_bdiii.domain.model;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Collate;
-
 import com.example.projeto_dick_bdiii.domain.Enum.ETipoTitulo;
 
 import jakarta.persistence.Column;
