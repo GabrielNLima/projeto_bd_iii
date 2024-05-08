@@ -39,7 +39,7 @@ public class UsuarioService implements
         if (usuario.isEmpty()) {
             throw new ResourceNotFoundException("Não foi possivel obter o usuário com o id " + id);
         }
-        return mapper.map(usuario,
+        return mapper.map(usuario.get(),
         UsuarioResponsedto.class);
     }
 
@@ -63,13 +63,15 @@ public class UsuarioService implements
 
     @Override
     public UsuarioResponsedto atualizar(Long id, UsuarioRequestdto dto) {
-        obterPorId(id);
+        UsuarioResponsedto usuarioBanco = obterPorId(id);
         if (dto.getEmail() == null || dto.getSenha() == null){
             throw new BadRequestException("Email e Senha são Obrigatórios");
         }
         Usuario usuario = mapper 
         .map(dto, Usuario.class);
         usuario.setId(id);
+        usuario.setDataCadastro(usuarioBanco.getDataCadastro());
+        usuario.setDataInativacao(usuarioBanco.getDataInativacao());
         usuario = usuarioRepository.save(usuario);
         return mapper.map(usuario, UsuarioResponsedto.class);
 
