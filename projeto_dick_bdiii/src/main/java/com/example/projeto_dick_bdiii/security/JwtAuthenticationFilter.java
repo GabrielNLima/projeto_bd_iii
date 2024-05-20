@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         usuarioResponse.setDataCadastro(usuario.getDataCadastro());
         usuarioResponse.setDataInativacao(usuario.getDataInativacao());
         LoginResponsedto loginResponsedto = new LoginResponsedto();
-        loginResponsedto.setToken("Bearer" +token);
+        loginResponsedto.setToken("Bearer " +token);
         loginResponsedto.setUsuarioResponsedto(usuarioResponse);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
