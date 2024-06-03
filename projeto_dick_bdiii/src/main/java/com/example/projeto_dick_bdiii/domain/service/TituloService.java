@@ -81,4 +81,11 @@ public class TituloService implements ICRUDService<TituloRequestDTO, TituloRespo
          throw new BadRequestException("Titulo Invalido - Campos Obrigat\u00f3rios n\u00e3o preenchidos");
       }
    }
+
+   public List<TituloResponseDTO> obterPorDataVencimento (String periodoInicial, String periodoFinal){
+      List<Titulo> titulos = tituloRepository.
+      obterFluxoDeCaixaPorDataVencimento(periodoInicial, periodoFinal);
+      return titulos.stream().map(titulo -> mapper
+      .map(titulo, TituloResponseDTO.class)).collect(Collectors.toList());
+   }
 }
