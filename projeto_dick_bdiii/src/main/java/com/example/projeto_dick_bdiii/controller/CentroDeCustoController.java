@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.projeto_dick_bdiii.domain.dto.centroDeCusto.CentroDeCustoRequestDTO;
 import com.example.projeto_dick_bdiii.domain.dto.centroDeCusto.CentroDeCustoResponseDTO;
-import com.example.projeto_dick_bdiii.domain.service.CentroDeCustosService;
+import com.example.projeto_dick_bdiii.domain.service.CentroDeCustoService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api/centrodecustos")
 public class CentroDeCustoController {
     @Autowired
-    private CentroDeCustosService service;
+    private CentroDeCustoService service;
 
     @GetMapping
     public ResponseEntity<List<CentroDeCustoResponseDTO>> obterTodos(){
